@@ -29,8 +29,13 @@ module hdmi_async_fifo #(
 
 reg  [DW-1:0] buffer [(1<<EA)-1:0];  // may automatically synthesize to BRAM
 
-reg  [EA:0] wptr=0, wq_wptr_grey=0, rq1_wptr_grey=0, rq2_wptr_grey=0;
-reg  [EA:0] rptr=0, rq_rptr_grey=0, wq1_rptr_grey=0, wq2_rptr_grey=0;
+reg  [EA:0] wptr=0;
+reg  [EA:0] wq_wptr_grey=0;
+(* ASYNC_REG = "TRUE" *) reg  [EA:0] rq1_wptr_grey=0, rq2_wptr_grey=0;
+
+reg  [EA:0] rptr=0;
+reg  [EA:0] rq_rptr_grey=0;
+(* ASYNC_REG = "TRUE" *) reg  [EA:0] wq1_rptr_grey=0, wq2_rptr_grey=0;
 reg  [EA:0] rptr_a1 = {{EA{1'b0}}, 1'b1};                                // rptr_a1 always equal to rptr+1, but using register to optimize timing
 wire [EA:0] rptr_next = (o_tvalid & o_tready) ? rptr_a1 : rptr;
 
